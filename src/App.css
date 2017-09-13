@@ -1,0 +1,74 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 80px;
+}
+
+.App-header {
+  background-color: #222;
+  height: 150px;
+  padding: 20px;
+  color: white;
+}
+
+.App-intro {
+  font-size: large;
+}
+
+.Todo-App {
+  padding-top: 20px;
+  display: inline-block;
+  text-align: left;
+}
+
+/* default class from HTML types specified just with type name */
+input {
+  font-size: 20px;
+}
+
+ul {
+  padding: 0px;
+}
+
+li {
+  list-style-type: none;
+}
+
+li span.delete-item {
+  visibility: hidden;
+}
+
+li:hover span.delete-item {
+  visibility: visible;
+}
+
+span.delete-item a {
+  text-decoration: none;
+  color: red
+}
+
+/* custom class specified with '.' and class name */
+.error {
+  color: red;
+}
+
+.link-class {
+  padding: 10px;
+}
+
+.link-class-active {
+  padding: 10px;
+  font-weight: bold;
+}
+
+a.active {
+  font-weight: bold;
+}
+
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
