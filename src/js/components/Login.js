@@ -23,9 +23,6 @@ class LoginComp extends Component {
       }
       console.log('handle login with email and pwd', this.state.user, this.state.password)
     }
-    const handleGoogleLogin = (e) => {
-      console.log('handle login with Google')
-    }
 
     return (
       <div>
@@ -39,9 +36,6 @@ class LoginComp extends Component {
             value={ this.state.password }/><br/>
           <input type="submit" value='Sign In'/>
         </form>
-
-        <br/>
-        <input type='button' onClick={ handleGoogleLogin } value='Sign in with Google'/>
       </div>
     )
   }
