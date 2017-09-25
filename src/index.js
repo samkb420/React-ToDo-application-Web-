@@ -13,12 +13,7 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 let store = createStore(
   rootReducer,
-  composeEnhancers(
-    applyMiddleware(
-            thunk//,
-            // routerAppMiddleware
-    )
-  )
+  applyMiddleware(thunk)
 )
 
 function renderApp() {
@@ -35,7 +30,7 @@ renderApp();
 
 if (module.hot) {
   // Renders App every time a change in code happens.
-  module.hot.accept('./components/app/App.js', renderApp);
+  module.hot.accept('./js/App.js', renderApp);
 }
 
 // registerServiceWorker();

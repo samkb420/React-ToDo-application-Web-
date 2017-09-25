@@ -1,5 +1,5 @@
-// export { addItem, toggleItem, removeItem, setVisibilityFilter } from './sub/items'
 export { createGroup, removeGroup } from './sub/groups'
+
 export {
   addItemAction,
   toggleItemAction,
@@ -7,10 +7,6 @@ export {
   setVisibilityFilterAction
 } from './sub/items'
 
-// export var incrementAction = () => ({
-//   type: 'increment'
-// })
-//
-// export var decrementAction = () => ({
-//   type: 'decrement'
-// })
+export const fetchUserAction = {
+  type: 'fetch_user'
+}

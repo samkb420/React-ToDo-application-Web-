@@ -3,20 +3,48 @@ import { bindActionCreators } from 'redux'
 import {connect } from "react-redux";
 import { Item } from './Item'
 import { addItemAction } from '../actions'
+import fire from '../../fire';
 
 class ItemsListComp extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      newItemName: '',
+      items: []
+    }
+  }
 
-  state = {
-    newItemName: ''
+  componentWillMount() {
+    let messagesRef = fire.database().ref('items').orderByKey()
+    messagesRef.on('child_added', snapshot => {
+      let item = snapshot.val()
+      // console.log('itemsList:componentWillMount: added item:', item)
+      this.setState({
+        items: [
+          ...this.state.items,
+          {
+            id: item.id,
+            text: item.text,
+            completed: item.completed
+          }
+        ]
+      })
+    })
   }
 
   render() {
     const handleSubmit = (e) => {
       e.preventDefault()
       if (this.state.newItemName === '') {
-        console.log('ItemsListComp:handleSubmit: newItemName is empty')
+        // console.log('ItemsListComp:handleSubmit: newItemName is empty')
       } else {
-        this.props.handleAddItem(this.state.newItemName)
+        //pushing into firebase
+        fire.database().ref('items').push({
+          id: Math.floor(Math.random()*100000),
+          text: this.state.newItemName,
+          completed: false
+        })
+        // this.props.handleAddItem(this.state.newItemName)
         this.setState({
           newItemName: ''
         })
@@ -38,8 +66,8 @@ class ItemsListComp extends Component {
             value={this.state.newItemName}/>
         </form>
 
-        {this.props.items.map(it =>
-          <Item key={it.id} id={it.id}/>
+        {this.state.items.map(it =>
+          <Item key={it.id} {...it}/>
         )}
       </ul>
     )
@@ -47,7 +75,7 @@ class ItemsListComp extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  console.log('ItemsList:mapStateToProps', state, ownProps)
+  // console.log('ItemsList:mapStateToProps', state, ownProps)
   return {
     items: state.itemsReducer
   }

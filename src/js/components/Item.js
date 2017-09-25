@@ -8,7 +8,7 @@ import { removeItemAction, toggleItemAction } from './../actions'
 class ItemComp extends Component {
 
   render() {
-    console.log('ItemComp: render', this.props)
+    // console.log('ItemComp: render', this.props)
     // eslint-disable-next-line
     return (
       <li>
@@ -23,17 +23,13 @@ class ItemComp extends Component {
 
 
 const mapStateToProps = (state, ownProps) => {
-  console.log('Item:mapStateToProps', state, ownProps)
-  const item = state.itemsReducer.find(it => it.id === ownProps.id)
-  return {
-    ...item
-  }
+  return ownProps
 }
 
 const mapDispatchToProps = (dispatch) => ({
   handleRemove: bindActionCreators(removeItemAction, dispatch),
   handleToggle: (id) => {
-    console.log('handleToggle')
+    // console.log('handleToggle', id)
     return dispatch(toggleItemAction(id))
   }
 })
