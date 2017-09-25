@@ -11,7 +11,6 @@ export const itemsReducer = (state = defState, action) => {
         {
           id: action.id,
           text: action.text,
-          // groupId: Helper.getCurrGroupId(state),
           completed: false
         }
       ]

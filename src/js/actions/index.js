@@ -1,12 +1,7 @@
+import * as AuthActions from './sub/auth'
+import * as ItemActions from './sub/items'
+
 export { createGroup, removeGroup } from './sub/groups'
 
-export {
-  addItemAction,
-  toggleItemAction,
-  removeItemAction,
-  setVisibilityFilterAction
-} from './sub/items'
 
-export const fetchUserAction = {
-  type: 'fetch_user'
-}
+export { ItemActions, AuthActions }

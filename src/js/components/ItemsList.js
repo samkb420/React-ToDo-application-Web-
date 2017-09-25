@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux'
 import {connect } from "react-redux";
 import { Item } from './Item'
-import { addItemAction } from '../actions'
+import { ItemActions } from '../actions'
 import fire from '../../fire';
 
 class ItemsListComp extends Component {
@@ -82,8 +82,9 @@ const mapStateToProps = (state, ownProps) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
+  var addItem = ItemActions.addItemAction
   return {
-    handleAddItem: bindActionCreators(addItemAction, dispatch)
+    handleAddItem: bindActionCreators(addItem, dispatch)
   }
 }
 

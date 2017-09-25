@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux'
-import {applyMiddleware, combineReducers, createStore, compose } from 'redux'
+import {applyMiddleware, createStore, compose } from 'redux'
 import thunk from 'redux-thunk'
 import { rootReducer } from './js/reducers'
 import './index.css';
@@ -9,6 +9,7 @@ import { AppContainer } from 'react-hot-loader'; // required
 import App from './js/App';
 // import registerServiceWorker from './registerServiceWorker';
 
+// eslint-disable-next-line
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 let store = createStore(

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux'
 import { connect } from "react-redux";
 
-import { removeItemAction, toggleItemAction } from './../actions'
+import { ItemActions } from './../actions'
 
 
 class ItemComp extends Component {
@@ -27,10 +27,10 @@ const mapStateToProps = (state, ownProps) => {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  handleRemove: bindActionCreators(removeItemAction, dispatch),
+  handleRemove: bindActionCreators(ItemActions.removeItemAction, dispatch),
   handleToggle: (id) => {
     // console.log('handleToggle', id)
-    return dispatch(toggleItemAction(id))
+    return dispatch(ItemActions.toggleItemAction(id))
   }
 })
 

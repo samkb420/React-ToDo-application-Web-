@@ -4,23 +4,17 @@ import { ItemsList } from './components/ItemsList'
 import Login from './components/Login'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux';
-import { fetchUserAction } from './actions'
+import { AuthActions } from './actions'
 
 class AppComp extends Component {
-  state = {
-    user: localStorage['user']
-  }
-
   componentDidMount() {
-    if (!this.state.user) {
-      this.props.fetchUser()
-    }
+    this.props.getchUserFromCache()
   }
 
   render() {
     console.log('app:render:props', this.props)
     var container;
-    if (this.state.user) {
+    if (!this.props.user) {
       container = (
         <div className="Todo-App">
           <p className="App-intro">Login</p>
@@ -28,6 +22,7 @@ class AppComp extends Component {
         </div>
       )
     } else {
+      console.log('have user', this.props.user)
       container = (
       <div className="Todo-App">
         <p className="App-intro">Todo List</p>
@@ -46,13 +41,15 @@ class AppComp extends Component {
 
 
 const mapStateToProps = (state, ownProps) => {
+  console.log('state', state)
   return {
+    user: state.authReducer.user
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetchUser: () => {console.log('need to fetch user here if have')}
+    getchUserFromCache: bindActionCreators(AuthActions.getchUserFromCacheAction, dispatch)
   }
 }
 

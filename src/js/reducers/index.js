@@ -1,7 +1,6 @@
 import { combineReducers } from 'redux'
 import { itemsReducer } from './sub/ItemsReducer'
-// import { Groups } from './sub/Groups'
-// export { DefaultState } from './sub/Helper'
+import authReducer from './sub/authReducer'
 
 // const defState = {
 //   counter: 0
@@ -25,7 +24,7 @@ import { itemsReducer } from './sub/ItemsReducer'
 // }
 
 export const rootReducer = combineReducers({
-  itemsReducer//,
-  // couterResucer
+  itemsReducer,
+  authReducer
   // Groups
 })
