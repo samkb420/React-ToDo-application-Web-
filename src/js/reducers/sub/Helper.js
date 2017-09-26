@@ -14,7 +14,7 @@ export const getNewStateWithGroups = (state, groups) => {
 }
 
 export const getGroups = (state) => {
-  console.log('getGroups=', state)
+  // console.log('getGroups=', state)
   return (state.groups === undefined)
     //Always init group array with default group
     ? [defaultGroup]

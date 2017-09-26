@@ -8,11 +8,11 @@ import { AuthActions } from './actions'
 
 class AppComp extends Component {
   componentDidMount() {
-    this.props.getchUserFromCache()
+      this.props.startManageAuthStateChanged()
   }
 
   render() {
-    console.log('app:render:props', this.props)
+    // console.log('app:render:props', this.props)
     var container;
     if (!this.props.user) {
       container = (
@@ -25,6 +25,7 @@ class AppComp extends Component {
       console.log('have user', this.props.user)
       container = (
       <div className="Todo-App">
+        <input type='button' onClick={this.props.handleSignOut} value='Sign Out'/>
         <p className="App-intro">Todo List</p>
         <ItemsList />
       </div>
@@ -41,7 +42,6 @@ class AppComp extends Component {
 
 
 const mapStateToProps = (state, ownProps) => {
-  console.log('state', state)
   return {
     user: state.authReducer.user
   }
@@ -49,7 +49,8 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getchUserFromCache: bindActionCreators(AuthActions.getchUserFromCacheAction, dispatch)
+    handleSignOut: bindActionCreators(AuthActions.signOut, dispatch),
+    startManageAuthStateChanged: bindActionCreators(AuthActions.startManageAuthStateChanged, dispatch)
   }
 }
 

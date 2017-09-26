@@ -10,12 +10,12 @@ export const Groups = (state =[], action) => {
             text: action.text
           }
         ])
-      console.log('create group, new state=', newState)
+      // console.log('create group, new state=', newState)
       return newState
 
     case 'remove_group':
       if (action.id === Helper.getDefaultGroupId()) {
-        console.log('default group cannot be removed!')
+        // console.log('default group cannot be removed!')
         return state
       }
       var tempState = state;

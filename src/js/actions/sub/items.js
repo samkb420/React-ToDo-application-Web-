@@ -7,7 +7,7 @@ export const addItemAction = (text) => ({
 })
 
 export const toggleItemAction = (id) => {
-  console.log('toggleItemAction', id)
+  // console.log('toggleItemAction', id)
   return {
   type: 'toggle_item',
   id

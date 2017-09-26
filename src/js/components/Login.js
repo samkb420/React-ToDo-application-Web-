@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { bindActionCreators } from 'redux'
+import { AuthActions } from '../actions'
 
 class LoginComp extends Component {
   state = {
@@ -21,7 +22,8 @@ class LoginComp extends Component {
         })
         return
       }
-      console.log('handle login with email and pwd', this.state.user, this.state.password)
+      // console.log('handle login with email=`', this.state.user, '` and pwd=`', this.state.password, '`')
+      this.props.createUserWithEmailAndPassword(this.state.user, this.state.password)
     }
 
     return (
@@ -48,6 +50,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
   const actions = {
+    createUserWithEmailAndPassword: AuthActions.createUserWithEmailAndPassword
   }
   return bindActionCreators(actions, dispatch)
 }
