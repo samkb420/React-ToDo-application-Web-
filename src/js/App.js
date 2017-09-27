@@ -27,8 +27,8 @@ class AppComp extends Component {
       var userName = this.props.user.displayName ? this.props.user.displayName : this.props.user.email
       container = (
       <div className="Todo-App">
-        <span>Welcome { userName }</span><br/>
-        <input type='button' onClick={this.props.handleSignOut} value='Sign Out'/>
+        <span>Welcome { userName }
+          <input type='button' onClick={this.props.handleSignOut} value='Sign Out'/></span><br/>
         <p className="App-intro">Group list</p>
         <GroupsList />
         <p className="App-intro">Todo List</p>

@@ -8,12 +8,13 @@ import { GroupActions } from './../actions'
 class GroupComp extends Component {
 
     render() {
-        console.log('GroupComp: render', this.props)
+        // console.log('GroupComp: render', this.props)
+        const active = (this.props.isCurrGroup) ? 'active' : ''
         // eslint-disable-next-line
         return (
             <li className='group-item'>
+                <input type='button' className={active} value={this.props.text} onClick={() => this.props.handleSelect(this.props.id)}/>
                 <span className='delete-item'><a href='#' onClick={() => this.props.handleRemove(this.props.id)}>x</a></span>
-                {this.props.text}
             </li>
         )
     }
@@ -21,12 +22,15 @@ class GroupComp extends Component {
 
 
 const mapStateToProps = (state, ownProps) => {
-    console.log('group:mapStateToProps', state, ownProps)
-    return ownProps
+    // console.log('group:mapStateToProps', state, ownProps)
+    return Object.assign({}, state, {
+        ...ownProps
+    })
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    handleRemove: bindActionCreators(GroupActions.removeGroup, dispatch)
+    handleRemove: bindActionCreators(GroupActions.removeGroup, dispatch),
+    handleSelect: bindActionCreators(GroupActions.setCurrentGroup, dispatch)
 })
 
 export const Group = connect(mapStateToProps, mapDispatchToProps)(GroupComp)

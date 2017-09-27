@@ -43,7 +43,15 @@ li span.delete-item {
 }
 
 li.group-item {
-  display:inline;
+  display: inline;
+}
+li.group-item input{
+  background-color: white;
+  color: black;
+}
+li.group-item input.active {
+  background-color: cornflowerblue;
+  color: white;
 }
 
 li:hover span.delete-item {

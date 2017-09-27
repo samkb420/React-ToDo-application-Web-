@@ -39,7 +39,7 @@ class GroupListComp extends Component {
         return (
             <ul>
                 {this.props.groups.map(gr =>
-                    <Group key={gr.id} {...gr} />
+                    <Group key={gr.id} {...gr} isCurrGroup={this.props.currGroupId === gr.id} />
                 )}
                 <form onSubmit={handleSubmit}>
                     add group
@@ -55,9 +55,10 @@ class GroupListComp extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-    // console.log('GroupsList:mapStateToProps', state, ownProps)
+    console.log('GroupsList:mapStateToProps', state, ownProps)
     return {
-        groups: state.groupsReducer
+        groups: state.groupsReducer.groups,
+        currGroupId: state.groupsReducer.currGroupId
     }
 }
 

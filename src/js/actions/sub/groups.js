@@ -48,6 +48,19 @@ export const removeGroup = (id) => {
     }
 }
 
+const currentGroupAction = id => {
+    return {
+        type: 'current_group',
+        id
+    }
+}
+export const setCurrentGroup = (id) => {
+    return (dispatch) => {
+        console.log('setCurrentGroup', id)
+        dispatch(currentGroupAction(id))
+    }
+}
+
 
 export const fetchAllGroups = () => {
     return (dispatch, getState) => {
@@ -56,12 +69,19 @@ export const fetchAllGroups = () => {
             console.log('fetchAllGroups: user should be null')
             return
         }
+        var isFirst = true;
         fire.database().ref('groups').orderByKey()
             .once('value', list => {
                 list.forEach(snapshot => {
                     var it = snapshot.val();
-                    console.log('addGroup', it)
+                    console.log('addGroup', snapshot.key, it)
                     dispatch(createGroupAction(snapshot.key, it.text, it.uids))
+                    //Set current group as first one in the list
+                    if (isFirst) {
+                        isFirst = false
+                        console.log('addGroup:setCurrGroup', snapshot.key)
+                        dispatch(currentGroupAction(snapshot.key))
+                    }
                 })
             })
     }
