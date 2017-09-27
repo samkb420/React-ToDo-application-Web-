@@ -115,7 +115,7 @@ export const fetchAllGroups = () => {
             .once('value', list => {
                 list.forEach(snapshot => {
                     var it = snapshot.val();
-                    if (it.uid !== getState().authReducer.user.uid) {
+                    if (it.uid !== getState().authReducer.user.uid && !it.isShared) {
                         return
                     }
                     //set fist group is being added as current
