@@ -4,14 +4,15 @@ const defState = [
 
 export const itemsReducer = (state = defState, action) => {
   switch (action.type) {
-    case 'add_item':
+      case 'add_item':
       // console.log('reduser: add_item', state, action)
       return [
         ...state,
         {
           id: action.id,
           text: action.text,
-          completed: action.completed
+          completed: action.completed,
+          groupId: action.groupId
         }
       ]
 

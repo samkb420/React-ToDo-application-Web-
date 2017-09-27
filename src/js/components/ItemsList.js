@@ -76,7 +76,7 @@ class ItemsListComp extends Component {
 const mapStateToProps = (state, ownProps) => {
   // console.log('ItemsList:mapStateToProps', state, ownProps)
   return {
-    items: state.itemsReducer
+    items: (state.groupsReducer.currGroupId) ? state.itemsReducer.filter(it => it.groupId === state.groupsReducer.currGroupId) : []
   }
 }
 

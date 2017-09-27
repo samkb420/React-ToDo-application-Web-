@@ -3,13 +3,14 @@ import fire from '../../../fire';
 // const generateUniqueId = () => Math.floor(Math.random()*100000)
 
 
-const addItemAction = (id, text, completed) => {
-  // console.log('addItem:', id, text, completed)
+const addItemAction = (id, text, completed, groupId) => {
+  // console.log('addItem:', id, text, completed, groupId)
   return {
     type: 'add_item',
     id,
     text,
-    completed
+    completed,
+    groupId
   }
 }
 
@@ -19,10 +20,14 @@ export const addItem = (newItem) => {
       console.log('addItem: user should be null')
       return
     }
+    var groupId = getState().groupsReducer.currGroupId
     var newItemRef = fire.database().ref('items').push()
-    newItemRef.set(newItem)
+    newItemRef.set({
+        ...newItem,
+        groupId
+    })
     // console.log('pushed new item', newItemRef)
-    dispatch(addItemAction(newItemRef.key, newItem.text, newItem.completed))
+    dispatch(addItemAction(newItemRef.key, newItem.text, newItem.completed, groupId))
   }
 }
 
@@ -82,7 +87,7 @@ export const fetchAllItems = () => {
         list.forEach(snapshot => {
           var it = snapshot.val();
           // console.log('addItem', it)
-          dispatch(addItemAction(snapshot.key, it.text, it.completed))
+          dispatch(addItemAction(snapshot.key, it.text, it.completed, it.groupId))
         })
       })
   }

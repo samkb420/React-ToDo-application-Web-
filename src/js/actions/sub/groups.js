@@ -1,5 +1,6 @@
 import fire from '../../../fire';
 import * as ReducersHelper from '../../reducers/sub/ReducersHelper'
+import {removeItem} from "./items";
 
 const createGroupAction = (id, text, uids) => {
   return {
@@ -23,6 +24,12 @@ export const createGroup = (text) => {
             uids
         })
         console.log('push new group', newRef)
+
+        //set fist group is being added as current
+        if (getState().groupsReducer.groups.length === 0) {
+            dispatch(setCurrentGroup(newRef.key))
+        }
+
         dispatch(createGroupAction(newRef.key, text, uids))
     }
 }
@@ -42,11 +49,24 @@ export const removeGroup = (id) => {
             return
         }
 
+        //remove current group in case last group is being removed
+        if (getState().groupsReducer.groups.length === 1) {
+            dispatch(setCurrentGroup(undefined))
+        }
+        //set first group as current if current group is being removed
+        if (getState().groupsReducer.currGroupId === id) {
+            dispatch(setCurrentGroup(getState().groupsReducer.groups[1].id))
+        }
+
         console.log('remove group', id)
         dispatch(removeGroupAction(id))
+
+        var itemsToRemove = getState().itemsReducer.filter(it => it.groupId === id)
+        itemsToRemove.map(it => dispatch(removeItem(it.id)))
         fire.database().ref('/groups/' + id).remove()
     }
 }
+
 
 const currentGroupAction = id => {
     return {
@@ -69,19 +89,17 @@ export const fetchAllGroups = () => {
             console.log('fetchAllGroups: user should be null')
             return
         }
-        var isFirst = true;
         fire.database().ref('groups').orderByKey()
             .once('value', list => {
                 list.forEach(snapshot => {
                     var it = snapshot.val();
+                    //set fist group is being added as current
+                    if (getState().groupsReducer.groups.length === 0) {
+                        dispatch(setCurrentGroup(snapshot.key))
+                    }
+
                     console.log('addGroup', snapshot.key, it)
                     dispatch(createGroupAction(snapshot.key, it.text, it.uids))
-                    //Set current group as first one in the list
-                    if (isFirst) {
-                        isFirst = false
-                        console.log('addGroup:setCurrGroup', snapshot.key)
-                        dispatch(currentGroupAction(snapshot.key))
-                    }
                 })
             })
     }
