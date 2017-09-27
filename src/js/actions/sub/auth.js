@@ -1,4 +1,5 @@
 import * as AuthHelper from './authHelper'
+import { ItemActions, GroupActions } from '../'
 
 export const saveUser = (user) => {
   return {
@@ -14,11 +15,13 @@ const signOutAction = () => {
 }
 
 export const signOut = () => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     AuthHelper.signOut(
       () => {
         console.log('successfully signed out')
         dispatch(signOutAction())
+        GroupActions.cleanUpCache()(dispatch, getState)
+        ItemActions.cleanUpCache()(dispatch, getState)
       },
       error => {
         console.log("signOut error", error)

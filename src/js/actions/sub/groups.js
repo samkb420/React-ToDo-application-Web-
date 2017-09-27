@@ -15,7 +15,7 @@ const createGroupAction = (id, text, uid, isShared) => {
 export const createGroup = (text) => {
     return (dispatch, getState) => {
         if (!getState().authReducer.user) {
-            console.log('createGroup: user should be null')
+            console.log('createGroup: user should not be null')
             return
         }
         var newRef = fire.database().ref('groups').push()
@@ -48,7 +48,7 @@ const removeGroupAction = id => {
 export const removeGroup = (id) => {
     return (dispatch, getState) => {
         if (!getState().authReducer.user) {
-            console.log('removeGroup: user should be null')
+            console.log('removeGroup: user should not be null')
             return
         }
 
@@ -108,13 +108,16 @@ export const fetchAllGroups = () => {
     return (dispatch, getState) => {
         // console.log('fetchAllItems: state', getState())
         if (!getState().authReducer.user) {
-            console.log('fetchAllGroups: user should be null')
+            console.log('fetchAllGroups: user should not not be null')
             return
         }
         fire.database().ref('groups').orderByKey()
             .once('value', list => {
                 list.forEach(snapshot => {
                     var it = snapshot.val();
+                    if (it.uid !== getState().authReducer.user.uid) {
+                        return
+                    }
                     //set fist group is being added as current
                     if (getState().groupsReducer.groups.length === 0) {
                         dispatch(setCurrentGroup(snapshot.key))
@@ -124,5 +127,12 @@ export const fetchAllGroups = () => {
                     dispatch(createGroupAction(snapshot.key, it.text, it.uid, it.isShared))
                 })
             })
+    }
+}
+
+export const cleanUpCache = () => {
+    return (dispatch, getState) => {
+        var groupsCpy = [...getState().groupsReducer.groups]
+        groupsCpy.map(gr => dispatch(removeGroupAction(gr.id)))
     }
 }

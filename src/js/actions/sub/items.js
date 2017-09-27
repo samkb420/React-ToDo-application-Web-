@@ -17,7 +17,7 @@ const addItemAction = (id, text, completed, groupId) => {
 export const addItem = (newItem) => {
   return (dispatch, getState) => {
     if (!getState().authReducer.user) {
-      console.log('addItem: user should be null')
+      console.log('addItem: user should not be null')
       return
     }
     var groupId = getState().groupsReducer.currGroupId
@@ -44,7 +44,7 @@ export const toggleItem = (id, completed) => {
   // console.log('toggleItem', id, completed)
   return (dispatch, getState) => {
     if (!getState().authReducer.user) {
-      console.log('toggleItem: user should be null')
+      console.log('toggleItem: user should not be null')
       return
     }
     //fist of all update UI
@@ -66,7 +66,7 @@ const removeItemAction = (id) => ({
 export const removeItem = (id) => {
   return (dispatch, getState) => {
     if (!getState().authReducer.user) {
-      console.log('removeItem: user should be null')
+      console.log('removeItem: user should not be null')
       return
     }
 
@@ -79,7 +79,7 @@ export const fetchAllItems = () => {
   return (dispatch, getState) => {
     // console.log('fetchAllItems: state', getState())
     if (!getState().authReducer.user) {
-      console.log('fetchAllItems: user should be null')
+      console.log('fetchAllItems: user should not be null')
       return
     }
     fire.database().ref('items').orderByKey()//TODO: introduce ordering functionality
@@ -90,5 +90,12 @@ export const fetchAllItems = () => {
           dispatch(addItemAction(snapshot.key, it.text, it.completed, it.groupId))
         })
       })
+  }
+}
+
+export const cleanUpCache = () => {
+  return (dispatch, getState) => {
+      var itemsCpy = [...getState().itemsReducer]
+      itemsCpy.map(it => dispatch(removeItemAction(it)))
   }
 }

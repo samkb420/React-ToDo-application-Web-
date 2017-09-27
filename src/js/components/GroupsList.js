@@ -57,7 +57,7 @@ class GroupListComp extends Component {
 const mapStateToProps = (state, ownProps) => {
     // console.log('GroupsList:mapStateToProps', state, ownProps)
     return {
-        groups: state.groupsReducer.groups,
+        groups: state.groupsReducer.groups.filter(gr => gr.uid === state.authReducer.user.uid),
         currGroupId: state.groupsReducer.currGroupId
     }
 }
