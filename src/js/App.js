@@ -22,9 +22,11 @@ class AppComp extends Component {
         </div>
       )
     } else {
-      console.log('have user', this.props.user)
+      // console.log('have user', this.props.user)
+      var userName = this.props.user.displayName ? this.props.user.displayName : this.props.user.email
       container = (
       <div className="Todo-App">
+        <span>Welcome { userName }</span><br/>
         <input type='button' onClick={this.props.handleSignOut} value='Sign Out'/>
         <p className="App-intro">Todo List</p>
         <ItemsList />

@@ -26,7 +26,7 @@ export const signOut = (resolve, reject) => {
 
 export const startManageAuthStateChanged = (onUserStateChanged) => {
   fire.auth().onAuthStateChanged((user) => {
-    console.log('userStateChanged', user)
+    // console.log('userStateChanged', user)
     onUserStateChanged(user)
   })
 }

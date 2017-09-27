@@ -9,42 +9,43 @@ class ItemsListComp extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      newItemName: '',
-      items: []
+      newItemName: ''//,
+      // items: []
     }
   }
 
-  componentWillMount() {
-    let messagesRef = fire.database().ref('items').orderByKey()
-    messagesRef.on('child_added', snapshot => {
-      let item = snapshot.val()
-      // console.log('itemsList:componentWillMount: added item:', item)
-      this.setState({
-        items: [
-          ...this.state.items,
-          {
-            id: item.id,
-            text: item.text,
-            completed: item.completed
-          }
-        ]
-      })
-    })
+  componentDidMount() {
+    this.props.fetchItems();
   }
+  // componentWillMount() {
+  //   let messagesRef = fire.database().ref('items').orderByKey()
+  //   messagesRef.on('child_added', snapshot => {
+  //     let item = snapshot.val()
+  //     // console.log('itemsList:componentWillMount: added item:', item)
+  //     this.setState({
+  //       items: [
+  //         ...this.state.items,
+  //         {
+  //           id: item.id,
+  //           text: item.text,
+  //           completed: item.completed
+  //         }
+  //       ]
+  //     })
+  //   })
+  // }
 
   render() {
     const handleSubmit = (e) => {
       e.preventDefault()
       if (this.state.newItemName === '') {
-        // console.log('ItemsListComp:handleSubmit: newItemName is empty')
+        console.log('ItemsListComp:handleSubmit: newItemName is empty')
       } else {
-        //pushing into firebase
-        fire.database().ref('items').push({
+        this.props.addItem({
           id: Math.floor(Math.random()*100000),
           text: this.state.newItemName,
           completed: false
         })
-        // this.props.handleAddItem(this.state.newItemName)
         this.setState({
           newItemName: ''
         })
@@ -66,7 +67,7 @@ class ItemsListComp extends Component {
             value={this.state.newItemName}/>
         </form>
 
-        {this.state.items.map(it =>
+        {this.props.items.map(it =>
           <Item key={it.id} {...it}/>
         )}
       </ul>
@@ -82,9 +83,9 @@ const mapStateToProps = (state, ownProps) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-  var addItem = ItemActions.addItemAction
   return {
-    handleAddItem: bindActionCreators(addItem, dispatch)
+    addItem: bindActionCreators(ItemActions.addItem, dispatch),
+    fetchItems: bindActionCreators(ItemActions.fetchAllItems, dispatch)
   }
 }
 
