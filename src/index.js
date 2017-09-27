@@ -14,7 +14,7 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 let store = createStore(
   rootReducer,
-  applyMiddleware(thunk)
+    composeEnhancers(applyMiddleware(thunk))
 )
 
 function renderApp() {

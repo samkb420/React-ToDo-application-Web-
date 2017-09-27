@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  background-color: white;
 }
 
 .App-logo {
@@ -39,6 +40,10 @@ li {
 
 li span.delete-item {
   visibility: hidden;
+}
+
+li.group-item {
+  display:inline;
 }
 
 li:hover span.delete-item {

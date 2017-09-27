@@ -3,7 +3,7 @@ import fire from '../../../fire';
 // const generateUniqueId = () => Math.floor(Math.random()*100000)
 
 
-export const addItemAction = (id, text, completed) => {
+const addItemAction = (id, text, completed) => {
   // console.log('addItem:', id, text, completed)
   return {
     type: 'add_item',
@@ -21,13 +21,13 @@ export const addItem = (newItem) => {
     }
     var newItemRef = fire.database().ref('items').push()
     newItemRef.set(newItem)
-    console.log('pushed new item', newItemRef)
+    // console.log('pushed new item', newItemRef)
     dispatch(addItemAction(newItemRef.key, newItem.text, newItem.completed))
   }
 }
 
 
-export const toggleItemAction = (id) => {
+const toggleItemAction = (id) => {
   // console.log('toggleItemAction', id)
   return {
     type: 'toggle_item',
@@ -50,16 +50,10 @@ export const toggleItem = (id, completed) => {
       it.completed = !completed
       fire.database().ref('/items/' + id).set(it)
     })
-    // var updates = {}
-    // updates['/items/' + id] = {
-    //   completed: !completed
-    // }
-    // console.log('toggleItem: updates', updates)
-    // fire.database().ref().update(updates)
   }
 }
 
-export const removeItemAction = (id) => ({
+const removeItemAction = (id) => ({
   type: 'remove_item',
   id
 })
@@ -75,13 +69,6 @@ export const removeItem = (id) => {
     fire.database().ref('/items/' + id).remove()
   }
 }
-
-
-export const setVisibilityFilterAction = (filter) => ({
-  type: 'set_visibility_filter',
-  filter
-})
-
 
 export const fetchAllItems = () => {
   return (dispatch, getState) => {

@@ -8,7 +8,7 @@ import { ItemActions } from './../actions'
 class ItemComp extends Component {
 
   render() {
-    console.log('ItemComp: render', this.props)
+    //console.log('ItemComp: render', this.props)
     // eslint-disable-next-line
     return (
       <li>
@@ -23,17 +23,13 @@ class ItemComp extends Component {
 
 
 const mapStateToProps = (state, ownProps) => {
-  console.log('item:mapStateToProps', state, ownProps)
+  // console.log('item:mapStateToProps', state, ownProps)
   return ownProps
 }
 
 const mapDispatchToProps = (dispatch) => ({
   handleRemove: bindActionCreators(ItemActions.removeItem, dispatch),
   handleToggle: bindActionCreators(ItemActions.toggleItem, dispatch)
-  // handleToggle: (id) => {
-  //   // console.log('handleToggle', id)
-  //   return dispatch(ItemActions.toggleItemAction(id))
-  // }
 })
 
 export const Item = connect(mapStateToProps, mapDispatchToProps)(ItemComp)

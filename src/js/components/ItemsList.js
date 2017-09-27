@@ -3,14 +3,12 @@ import { bindActionCreators } from 'redux'
 import {connect } from "react-redux";
 import { Item } from './Item'
 import { ItemActions } from '../actions'
-import fire from '../../fire';
 
 class ItemsListComp extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      newItemName: ''//,
-      // items: []
+      newItemName: ''
     }
   }
 
@@ -42,7 +40,7 @@ class ItemsListComp extends Component {
         console.log('ItemsListComp:handleSubmit: newItemName is empty')
       } else {
         this.props.addItem({
-          id: Math.floor(Math.random()*100000),
+          // id: Math.floor(Math.random()*100000),
           text: this.state.newItemName,
           completed: false
         })

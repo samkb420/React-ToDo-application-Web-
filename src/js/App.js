@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './../css/App.css';
 import { ItemsList } from './components/ItemsList'
+import { GroupsList } from './components/GroupsList'
 import Login from './components/Login'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux';
@@ -28,6 +29,8 @@ class AppComp extends Component {
       <div className="Todo-App">
         <span>Welcome { userName }</span><br/>
         <input type='button' onClick={this.props.handleSignOut} value='Sign Out'/>
+        <p className="App-intro">Group list</p>
+        <GroupsList />
         <p className="App-intro">Todo List</p>
         <ItemsList />
       </div>
@@ -44,6 +47,7 @@ class AppComp extends Component {
 
 
 const mapStateToProps = (state, ownProps) => {
+  // console.log('app:mapStateToProps', state)
   return {
     user: state.authReducer.user
   }
