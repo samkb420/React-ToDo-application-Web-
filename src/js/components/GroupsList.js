@@ -34,7 +34,7 @@ class GroupListComp extends Component {
                 newGroupName: e.target.value
             })
         }
-        console.log('groupList: render: groups=', this.props.groups)
+        // console.log('groupList: render: groups=', this.props.groups)
 
         return (
             <ul>
@@ -55,7 +55,7 @@ class GroupListComp extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-    console.log('GroupsList:mapStateToProps', state, ownProps)
+    // console.log('GroupsList:mapStateToProps', state, ownProps)
     return {
         groups: state.groupsReducer.groups,
         currGroupId: state.groupsReducer.currGroupId

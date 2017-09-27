@@ -2,12 +2,13 @@ import fire from '../../../fire';
 import * as ReducersHelper from '../../reducers/sub/ReducersHelper'
 import {removeItem} from "./items";
 
-const createGroupAction = (id, text, uids) => {
+const createGroupAction = (id, text, uid, isShared) => {
   return {
     type: 'create_group',
     id,
     text,
-    uids
+    uid,
+    isShared
   }
 }
 
@@ -18,10 +19,12 @@ export const createGroup = (text) => {
             return
         }
         var newRef = fire.database().ref('groups').push()
-        var uids = [ReducersHelper.getUserUid(getState)]
+        var uid = ReducersHelper.getUserUid(getState)
+        var isShared = false
         newRef.set({
             text,
-            uids
+            uid,
+            isShared
         })
         console.log('push new group', newRef)
 
@@ -30,7 +33,7 @@ export const createGroup = (text) => {
             dispatch(setCurrentGroup(newRef.key))
         }
 
-        dispatch(createGroupAction(newRef.key, text, uids))
+        dispatch(createGroupAction(newRef.key, text, uid, isShared))
     }
 }
 
@@ -76,11 +79,30 @@ const currentGroupAction = id => {
 }
 export const setCurrentGroup = (id) => {
     return (dispatch) => {
-        console.log('setCurrentGroup', id)
+        // console.log('setCurrentGroup', id)
         dispatch(currentGroupAction(id))
     }
 }
 
+const toggleSharingAction = id => {
+    return {
+        type: 'toggle_sharing',
+        id
+    }
+}
+
+export const toggleSharing = (id) => {
+    return (dispatch) => {
+        console.log('toggleSharing', id)
+        dispatch(toggleSharingAction(id))
+        //then update server data
+        fire.database().ref('/groups/' + id).once('value').then(snapshot => {
+            var it = snapshot.val();
+            it.isShared = !it.isShared
+            fire.database().ref('/groups/' + id).set(it)
+        })
+    }
+}
 
 export const fetchAllGroups = () => {
     return (dispatch, getState) => {
@@ -99,7 +121,7 @@ export const fetchAllGroups = () => {
                     }
 
                     console.log('addGroup', snapshot.key, it)
-                    dispatch(createGroupAction(snapshot.key, it.text, it.uids))
+                    dispatch(createGroupAction(snapshot.key, it.text, it.uid, it.isShared))
                 })
             })
     }
