@@ -12,7 +12,8 @@ export const itemsReducer = (state = defState, action) => {
           id: action.id,
           text: action.text,
           completed: action.completed,
-          groupId: action.groupId
+          groupId: action.groupId,
+          orderNum: action.orderNum
         }
       ]
 
@@ -22,6 +23,13 @@ export const itemsReducer = (state = defState, action) => {
         (it.id === action.id)
           ? {...it, completed: !it.completed}
           : it
+      )
+
+    case 'update_order_num_item':
+      return state.map(it =>
+          (it.id === action.id)
+              ? {...it, orderNum: action.orderNum}
+              : it
       )
 
     case 'remove_item':

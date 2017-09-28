@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux'
 import {connect } from "react-redux";
+import DragSortableList from 'react-drag-sortable'
 import { Item } from './Item'
 import { ItemActions, GroupActions } from '../actions'
 
@@ -15,26 +16,9 @@ class ItemsListComp extends Component {
   componentDidMount() {
     this.props.fetchItems();
   }
-  // componentWillMount() {
-  //   let messagesRef = fire.database().ref('items').orderByKey()
-  //   messagesRef.on('child_added', snapshot => {
-  //     let item = snapshot.val()
-  //     // console.log('itemsList:componentWillMount: added item:', item)
-  //     this.setState({
-  //       items: [
-  //         ...this.state.items,
-  //         {
-  //           id: item.id,
-  //           text: item.text,
-  //           completed: item.completed
-  //         }
-  //       ]
-  //     })
-  //   })
-  // }
 
   render() {
-    console.log('ItemsList:render', this.props)
+    // console.log('ItemsList:render', this.props)
     const handleSubmit = (e) => {
       e.preventDefault()
       if (this.state.newItemName === '') {
@@ -60,6 +44,15 @@ class ItemsListComp extends Component {
     const shareImgSrc = (this.props.isShared)
         ? 'https://freeiconshop.com/wp-content/uploads/edd/share-outline-filled.png'
         : 'http://sleep.urbandroid.org/wp-content/uploads/share-256.png'
+
+    var items = []
+    this.props.items.map(it => {
+      items.push({ content: (
+          <div key={it.id}><Item key={it.id} {...it}/></div>
+      ) })
+    })
+
+
     return (
       <div>
         {this.props.groupName && (
@@ -73,18 +66,13 @@ class ItemsListComp extends Component {
                     height='20' />
               </a>
             </p>
-            <ul>
-              <form onSubmit={handleSubmit}>
-                <input
+            <form onSubmit={handleSubmit}>
+              <input
                   type="text"
                   onChange={handleChange}
                   value={this.state.newItemName}/>
-              </form>
-
-              {this.props.items.map(it =>
-                <Item key={it.id} {...it}/>
-              )}
-            </ul>
+            </form>
+            <DragSortableList items={items} onSort={(list, e) => this.props.updateOrderNums(list)} type='vertical'/>
           </div>
         )}
       </div>
@@ -93,7 +81,7 @@ class ItemsListComp extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  console.log('ItemsList:mapStateToProps', state.groupsReducer.groups)
+  // console.log('ItemsList:mapStateToProps', state.groupsReducer.groups)
   const currGroupId = state.groupsReducer.currGroupId
   const groups = state.groupsReducer.groups
   var groupName
@@ -104,8 +92,12 @@ const mapStateToProps = (state, ownProps) => {
       isShared = currGroup.isShared
   }
 
+  var items = (state.groupsReducer.currGroupId)
+      ? state.itemsReducer.filter(it => it.groupId === state.groupsReducer.currGroupId).sort((a, b) => a.orderNum-b.orderNum)
+      : []
+
   return {
-    items: (state.groupsReducer.currGroupId) ? state.itemsReducer.filter(it => it.groupId === state.groupsReducer.currGroupId) : [],
+    items,
     groupName,
     currGroupId,
     isShared
@@ -116,7 +108,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
     addItem: bindActionCreators(ItemActions.addItem, dispatch),
     fetchItems: bindActionCreators(ItemActions.fetchAllItems, dispatch),
-    toggleShareGroup: bindActionCreators(GroupActions.toggleSharing, dispatch)
+    toggleShareGroup: bindActionCreators(GroupActions.toggleSharing, dispatch),
+    updateOrderNums: bindActionCreators(ItemActions.updateOrderNums, dispatch)
   }
 }
 
